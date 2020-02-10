@@ -13,7 +13,7 @@ import (
 // Drain takes a http.Server and drains on certain os.Signals
 // and returns a future to block the server until fully drained.
 func Drain(srv *http.Server) <-chan struct{} {
-	idleConns := make(chan struct{})
+	done := make(chan struct{})
 	go func() {
 		q := make(chan os.Signal, 1)
 		signal.Notify(q, syscall.SIGTERM, os.Interrupt)
@@ -22,14 +22,14 @@ func Drain(srv *http.Server) <-chan struct{} {
 		if err := srv.Shutdown(context.Background()); err != nil {
 			log.Printf("[graceful] Could not shutdown gracefully: %v", err)
 		}
-		close(idleConns)
+		close(done)
 	}()
-	return idleConns
+	return done
 }
 
 // DrainWithContext behaves the same as Drain but can be canceled with ctx.
 func DrainWithContext(ctx context.Context, srv *http.Server) <-chan struct{} {
-	idleConns := make(chan struct{})
+	done := make(chan struct{})
 	go func() {
 		q := make(chan os.Signal, 1)
 		signal.Notify(q, syscall.SIGTERM, os.Interrupt)
@@ -45,7 +45,7 @@ func DrainWithContext(ctx context.Context, srv *http.Server) <-chan struct{} {
 		if err := srv.Shutdown(context.Background()); err != nil {
 			log.Printf("[graceful] Could not shutdown gracefully: %v", err)
 		}
-		close(idleConns)
+		close(done)
 	}()
-	return idleConns
+	return done
 }
