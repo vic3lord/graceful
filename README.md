@@ -1,11 +1,18 @@
-package graceful
+# Graceful
+
+Graceful shutdown helpers for http servers.
+
+```go
+package main
 
 import (
 	"errors"
 	"net/http"
+
+	"github.com/vic3lord/graceful"
 )
 
-func ExampleDrain() {
+func main() {
 	srv := &http.Server{Addr: ":3000"}
 	go func() {
 		err := srv.ListenAndServe()
@@ -13,5 +20,6 @@ func ExampleDrain() {
 			// Handle error here.
 		}
 	}()
-	<-Drain(&DrainHTTP{srv})
+	<-graceful.Drain(&graceful.DrainHTTP{srv})
 }
+```
