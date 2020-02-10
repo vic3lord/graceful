@@ -46,7 +46,7 @@ func (d *DrainHTTP) DrainWithContext(ctx context.Context) <-chan struct{} {
 			log.Printf("[graceful] Shutting down due to ctx: %v", ctx.Err())
 		}
 
-		if err := d.Shutdown(context.Background()); err != nil {
+		if err := d.Shutdown(ctx); err != nil {
 			log.Printf("[graceful] Could not shutdown gracefully: %v", err)
 		}
 		close(done)
