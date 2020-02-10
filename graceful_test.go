@@ -14,5 +14,5 @@ func ExampleDrain(t *testing.T) {
 			// Handle error here.
 		}
 	}()
-	<-Drain(&HTTPDrain{srv})
+	<-Drain(&DrainHTTP{srv})
 }

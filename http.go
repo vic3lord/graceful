@@ -10,13 +10,13 @@ import (
 	"syscall"
 )
 
-type HTTPDrain struct {
+type DrainHTTP struct {
 	*http.Server
 }
 
 // Drain takes a http.Server and drains on certain os.Signals
 // and returns a future to block the server until fully drained.
-func (d *HTTPDrain) Drain() <-chan struct{} {
+func (d *DrainHTTP) Drain() <-chan struct{} {
 	done := make(chan struct{})
 	go func() {
 		q := make(chan os.Signal, 1)
@@ -32,7 +32,7 @@ func (d *HTTPDrain) Drain() <-chan struct{} {
 }
 
 // DrainWithContext behaves the same as Drain but can be canceled with ctx.
-func (d *HTTPDrain) DrainWithContext(ctx context.Context) <-chan struct{} {
+func (d *DrainHTTP) DrainWithContext(ctx context.Context) <-chan struct{} {
 	done := make(chan struct{})
 	go func() {
 		q := make(chan os.Signal, 1)
