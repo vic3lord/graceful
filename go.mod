@@ -1,3 +1,3 @@
 module github.com/vic3lord/graceful
 
-go 1.13
+go 1.18

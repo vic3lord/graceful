@@ -1,6 +1,7 @@
 # Graceful
 
-Graceful shutdown helpers for http servers.
+Graceful shutdown helpers for long running servers.
+Databases, HTTP, gRPC, etc.
 
 ```go
 package main
@@ -20,6 +21,6 @@ func main() {
 			// Handle error here.
 		}
 	}()
-	<-graceful.Drain(&graceful.DrainHTTP{srv})
+	graceful.Drain(context.Background(), &graceful.DrainHTTP{srv})
 }
 ```
